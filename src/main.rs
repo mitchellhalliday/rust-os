@@ -13,15 +13,10 @@ pub extern "C" fn _start() -> ! {
 
     rust_os::init();
 
-    // trigger a page fault
-    unsafe {
-        *(0xdeadbeef as *mut u8) = 42;
-    };
-
     #[cfg(test)]
     test_main();
 
-    loop {}
+    rust_os::hlt_loop();
 }
 
 /// This function is called on panic.
@@ -29,7 +24,8 @@ pub extern "C" fn _start() -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+
+    rust_os::hlt_loop();
 }
 
 #[cfg(test)]
