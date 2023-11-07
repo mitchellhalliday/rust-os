@@ -9,9 +9,6 @@ panic = "abort"
 [profile.release]
 panic = "abort"
 
-[build]
-target = "x86_64-rust_os.json"
-
 [package.metadata.bootimage]
 build-command = ["build"]
 
