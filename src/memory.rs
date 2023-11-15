@@ -6,6 +6,7 @@ use x86_64::{
 
 pub unsafe fn init(physical_memory_offset: VirtAddr) -> OffsetPageTable<'static> {
     let level_4_table = active_level_4_table(physical_memory_offset);
+
     OffsetPageTable::new(level_4_table, physical_memory_offset)
 }
 

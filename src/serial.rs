@@ -1,6 +1,8 @@
+use core::fmt::{Result, Write};
 use lazy_static::lazy_static;
 use spin::Mutex;
-use uart_16550::SerialPort;
+
+use crate::drivers::serial_port::SerialPort;
 
 lazy_static! {
     pub static ref SERIAL1: Mutex<SerialPort> = {
@@ -12,9 +14,15 @@ lazy_static! {
     };
 }
 
+impl Write for SerialPort {
+    fn write_str(&mut self, s: &str) -> Result {
+        self.write_string(s);
+        Ok(())
+    }
+}
+
 #[doc(hidden)]
 pub fn _print(args: ::core::fmt::Arguments) {
-    use core::fmt::Write;
     use x86_64::instructions::interrupts;
 
     interrupts::without_interrupts(|| {
